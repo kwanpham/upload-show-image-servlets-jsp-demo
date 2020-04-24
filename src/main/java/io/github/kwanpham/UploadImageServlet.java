@@ -21,35 +21,35 @@ import java.util.Date;
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class UploadImageServlet extends HttpServlet {
 
-    public static final String DOWNLOAD_PATH = "F:\\Downloads";
+    //Thu muc luu anh
+    public static final String DOWNLOAD_PATH = "C:\\Images";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         // Upload file voi Servlet API >= 3.0
-        for (Part part : request.getParts()) {
+        Part part = request.getPart("image");
 
-            // Lay ten file anh trong header
-            String imageName = getFileName(part);
+        // Lay ten file anh trong header
+        String imageName = getFileName(part);
 
-            // Kiem tra ten dinh dang file co hop le hay khong
-            if (!validateImage(imageName)) {
-                request.setAttribute("message", "This is not an image format !");
-                request.getRequestDispatcher("/result.jsp").forward(request, response);
-                return;
-            }
-
-            // Doi ten anh theo time upload , co the boi den dong nay neu khong can
-            imageName = getFakeImageName(imageName);
-
-            part.write(this.getFolderUpload().getAbsolutePath() + File.separator + imageName);
-            request.setAttribute("imageName", imageName);
+        // Kiem tra ten dinh dang file co hop le hay khong
+        if (!validateImage(imageName)) {
+            request.setAttribute("message", "This is not an image format !");
+            request.getRequestDispatcher("/result.jsp").forward(request, response);
+            return;
         }
+
+        // Doi ten anh theo time upload , co the boi den dong nay neu khong can
+        imageName = getFakeImageName(imageName);
+
+        part.write(this.getFolderUpload().getAbsolutePath() + File.separator + imageName);
+        request.setAttribute("imageName", imageName);
+
         request.setAttribute("message", "Upload Image Success!");
 
         request.getRequestDispatcher("/result.jsp").forward(request, response);
     }
-
 
 
     private String getFileName(Part part) {
@@ -63,12 +63,11 @@ public class UploadImageServlet extends HttpServlet {
     private boolean validateImage(String imageName) {
         {
             String[] s = imageName.split("\\.");
-            if (s.length==0){
+            if (s.length == 0) {
                 return false;
             }
-            String ext = s[s.length-1];
-            switch (ext)
-            {
+            String ext = s[s.length - 1];
+            switch (ext) {
                 case "gif":
                     return true;
                 case "png":
@@ -85,7 +84,7 @@ public class UploadImageServlet extends HttpServlet {
 
     private String getFakeImageName(String imageName) {
         String[] s = imageName.split("\\.");
-        String ext = s[s.length-1];
+        String ext = s[s.length - 1];
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSS");
         imageName = formatter.format(new Date()) + "." + ext;
         return imageName;
@@ -101,6 +100,6 @@ public class UploadImageServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("index.jsp").forward(request,response);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }

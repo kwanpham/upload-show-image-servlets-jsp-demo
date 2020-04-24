@@ -8,7 +8,7 @@
 <h2>Demo JSP-Servlet Upload File</h2>
 <form method="post" action="/UploadImageServlet" enctype="multipart/form-data">
     Select file to upload:
-    <input type="file" name="file" size="60" />
+    <input type="file" name="image" size="60" />
     <br />
     <br />
     <input type="submit" value="Upload" />
